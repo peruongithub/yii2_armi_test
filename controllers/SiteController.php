@@ -38,6 +38,12 @@ class SiteController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
+                    'login' => ['post'],
+                    'index' => ['get'],
+                    'about' => ['get'],
+                    'users' => ['get'],
+                    'messages' => ['get'],
+                    'message' => ['get', 'post'],
                 ],
             ],
         ];
@@ -71,14 +77,6 @@ class SiteController extends Controller
 
         $user = new LoginForm();
         $users = User::getActiveUsers();
-
-        if ($message->load(\Yii::$app->request->post()) && $message->validate()) {
-            $message->save();
-            $message = new Message();
-            if (\Yii::$app->request->isPjax) {
-                return $this->renderAjax('_chat', compact('message', 'messages', 'users', 'user'));
-            }
-        }
 
         return $this->render('chat', compact('message', 'messages', 'users', 'user'));
     }
