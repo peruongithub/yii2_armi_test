@@ -40,6 +40,13 @@ class LoginForm extends Model
     public function login()
     {
         if ($this->validate()) {
+
+            if (User::isLogedin($this->name)) {
+                $this->addError('name', sprintf('User with name "%s" is logged in', $this->name));
+
+                return false;
+            }
+
             $user = $this->getUser();
             if (null === $user) {//register
                 $user = new User();
