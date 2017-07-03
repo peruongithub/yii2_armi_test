@@ -50,26 +50,6 @@ class User extends ActiveRecord implements IdentityInterface
         ]);
     }
 
-    /**
-     * @param $name
-     * @return bool
-     */
-    public static function isLogedin($name)
-    {
-        $sessionTable = \Yii::$app->session->sessionTable;
-        $userTable = self::tableName();
-        $result = self::find()
-            ->innerJoin(\Yii::$app->session->sessionTable, "$sessionTable.user_id = $userTable.id")
-            ->where(
-                "DATE_SUB(CURRENT_TIMESTAMP, INTERVAL :delta SECOND) <= $sessionTable.last_activity",
-                [':delta' => \Yii::$app->params['userActivityInterval']]
-            )
-            ->andWhere("$userTable.id = :name", [':name' => $name])
-            ->one();
-
-        return $result ? false : true;
-    }
-
     public function beforeSave($insert)
     {
         if (!parent::beforeSave($insert)) {
