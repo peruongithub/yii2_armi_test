@@ -53,6 +53,7 @@ return [
     'password' => '1234',
     'charset' => 'utf8',
 ];
+```
 
 In project root use command:
 ~~~
